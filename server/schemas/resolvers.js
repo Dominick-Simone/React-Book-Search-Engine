@@ -2,6 +2,9 @@ const { User } = require('../models');
 
 const resolvers = {
   Query: {
+    users: async () => {
+      return await User.find()
+    },
     me: async (parent, args, context) => {
         const foundUser = await User.findOne({ _id: context.user_id});
 
@@ -50,17 +53,17 @@ const resolvers = {
         }
       },
   },
-  deleteBook: async (parent, {bookId}, context) => {
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: context.user._id },
-        { $pull: { savedBooks: { bookId: bookId } } },
-        { new: true }
-      );
-      if (!updatedUser) {
-        throw new AuthenticationError("Couldn't find user with this id!");
-      }
-      return updatedUser;
-  },
+  // removeBook: async (parent, { bookId }, context) => {
+  //     const updatedUser = await User.findOneAndUpdate(
+  //       { _id: context.user._id },
+  //       { $pull: { savedBooks: { bookId: bookId } } },
+  //       { new: true }
+  //     );
+  //     if (!updatedUser) {
+  //       throw new AuthenticationError("Couldn't find user with this id!");
+  //     }
+  //     return updatedUser;
+  // }
 };
 
 module.exports = resolvers;
